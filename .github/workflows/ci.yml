@@ -34,14 +34,14 @@ jobs:
         working-directory: ${{ env.WORKING_DIR }}
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
     - id: 'auth'
       name: 'Authenticate to Google Cloud'
       uses: google-github-actions/auth@v0.7.0
       with:
         create_credentials_file: 'true'
-        workload_identity_provider: projects/site-autofill/locations/global/workloadIdentityPools/github-actions/providers/gha-provider
+        workload_identity_provider: projects/848541161515/locations/global/workloadIdentityPools/github-actions/providers/gha-provider
         service_account: terraform-ci@site-autofill.iam.gserviceaccount.com
 
     - uses: hashicorp/setup-terraform@v1
