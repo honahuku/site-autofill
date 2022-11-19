@@ -1,8 +1,18 @@
-FROM ubuntu:22
+FROM ubuntu:22.04
 
+# bashを使うためのおまじない
+SHELL ["/bin/bash", "-c"]
+
+# wgetとapt-key addをするための準備
+RUN apt update && \
+    apt install -y \
+    wget \
+    gnupg2
+
+# chromeとselenium関連のインストール
 RUN wget https://dl.google.com/linux/linux_signing_key.pub  && \
     apt-key add linux_signing_key.pub && \
-    echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list && \
+    echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | tee /etc/apt/sources.list.d/google-chrome.list && \
     apt update && \
     apt install -y \
     python3-pip \
