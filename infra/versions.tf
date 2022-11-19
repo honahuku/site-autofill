@@ -1,4 +1,12 @@
 terraform {
+  cloud {
+    organization = "honahuku1"
+
+    workspaces {
+      name = "site-autofill"
+    }
+  }
+
   required_providers {
     google = {
       source  = "hashicorp/google"
