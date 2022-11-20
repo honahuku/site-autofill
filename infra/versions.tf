@@ -1,6 +1,6 @@
 terraform {
   cloud {
-    organization = "honahuku1"
+    organization = "honahuku"
 
     workspaces {
       name = "site-autofill"
