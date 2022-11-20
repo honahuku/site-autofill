@@ -17,5 +17,14 @@ RUN wget https://dl.google.com/linux/linux_signing_key.pub  && \
     apt install -y \
     python3-pip \
     python3-selenium \
-    google-chrome-stable
+    google-chrome-stable \
+    fonts-ipafont-gothic
+
+# chrome driver自動更新用のモジュール
+RUN pip3 install webdriver-manager
+
+# 開発環境
+RUN apt install -y \
+    vim
+
 
