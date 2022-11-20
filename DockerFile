@@ -18,10 +18,15 @@ RUN wget https://dl.google.com/linux/linux_signing_key.pub  && \
     python3-pip \
     python3-selenium \
     google-chrome-stable \
+    # 日本語フォント
     fonts-ipafont-gothic
 
 # chrome driver自動更新用のモジュール
 RUN pip3 install webdriver-manager
+
+RUN apt install -y \
+    # 2段階認証コード生成
+    oathtool
 
 # 開発環境
 RUN apt install -y \
