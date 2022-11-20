@@ -1,0 +1,16 @@
+name: Docker build
+run-name: build
+on:
+  push:
+    branches-ignore:
+      - main
+  jobs:
+    dev-image-build-&-push:
+      runs-on: ubuntu-latest
+      steps:
+        - build
+        # TODO:
+        - push
+        # TODO:
+on:
+  TODO:ここにmargeされたときの処理を書く
