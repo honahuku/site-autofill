@@ -15,12 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # チェックアウト
-      - name: Checkout the repository
-        uses: actions/checkout@v1
+      - uses: 'actions/checkout@v3'
 
-      # 認証
       - id: 'auth'
-        uses: 'google-github-actions/auth@v0'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
         with:
           credentials_json: $GCP_CREDENTIALS
 
