@@ -6,8 +6,9 @@ on:
       - main
 
 env:
-  GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
   GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCP_WORKLOAD_ID: ${{ secrets.GCP_WORKLOAD_ID }}
+  GCP_SA: ${{ secrets.GCP_SA }}
   IMAGE: gcr.io/${{ secrets.GCP_PROJECT_ID }}/test-image:${{ github.sha }}
 
 jobs:
@@ -26,8 +27,8 @@ jobs:
       name: 'Authenticate to Google Cloud'
       uses: 'google-github-actions/auth@v1'
       with:
-        workload_identity_provider: 'projects/848541161515/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
-        service_account: 'github-ci@site-autofill.iam.gserviceaccount.com'
+        workload_identity_provider: $GCP_WORKLOAD_ID
+        service_account: $GCP_SA
 
     # gcloudの設定
     - name: 'Set up Cloud SDK'
