@@ -13,30 +13,36 @@ env:
 jobs:
   dev-image-build-and-push:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
     steps:
-      # チェックアウト
-      - uses: 'actions/checkout@v3'
+    # チェックアウト
+    - uses: 'actions/checkout@v3'
 
-      - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v1'
-        with:
-          credentials_json: $GCP_CREDENTIALS
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        workload_identity_provider: 'projects/848541161515/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+        service_account: 'github-ci@site-autofill.iam.gserviceaccount.com'
 
-      # gcloudの設定
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v0'
+    # gcloudの設定
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v0'
 
-      # Docker に gcloud コマンドの Credential を使わせる
-      - name: 'Configure docker to use the gcloud cli'
-        run: gcloud auth configure-docker --quiet
+    # Docker に gcloud コマンドの Credential を使わせる
+    - name: 'Configure docker to use the gcloud cli'
+      run: gcloud auth configure-docker --quiet
 
-      # Docker イメージを作成
-      - name: 'Build a docker image'
-        run: docker build -t $IMAGE .
+    # Docker イメージを作成
+    - name: 'Build a docker image'
+      run: docker build -t $IMAGE .
 
-      # Docker イメージを Container Registry に Push
-      - name: 'Push the docker image to Container Registry'
-        run: docker push $IMAGE
+    # Docker イメージを Container Registry に Push
+    - name: 'Push the docker image to Container Registry'
+      run: docker push $IMAGE
 # on:
 #   TODO:ここにmargeされたときの処理を書く
