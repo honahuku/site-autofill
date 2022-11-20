@@ -10,6 +10,10 @@ env:
   GCP_WORKLOAD_ID: ${{ secrets.GCP_WORKLOAD_ID }}
   GCP_SA: ${{ secrets.GCP_SA }}
   IMAGE: gcr.io/${{ secrets.GCP_PROJECT_ID }}/test-image:${{ github.sha }}
+  ACCOUNT_PW: ${{ secrets.ACCOUNT_PASS }}
+  EMAIL: ${{ secrets.EMAIL }}
+  MFA_KEY: ${{ secrets.MFA_KEY }}
+  URL: ${{ secrets.URL }}
 
 jobs:
   dev-image-build-and-push:
@@ -40,7 +44,7 @@ jobs:
 
     # Docker イメージを作成
     - name: 'Build a docker image'
-      run: docker build -t $IMAGE .
+      run: docker build . -f ./DockerFile -t $IMAGE --build-arg ACCOUNT_PW=$ACCOUNT_PW --build-arg EMAIL=$EMAIL --build-arg MFA_KEY=$MFA_KEY --build-arg URL=$URL
 
     # Docker イメージを Container Registry に Push
     - name: 'Push the docker image to Container Registry'
