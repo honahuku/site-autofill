@@ -11,7 +11,7 @@ env:
   IMAGE: gcr.io/${{ secrets.GCP_PROJECT_ID }}/test-image:${{ github.sha }}
 
 jobs:
-  dev-image-build-&-push:
+  dev-image-build-and-push:
     runs-on: ubuntu-latest
     steps:
     # チェックアウト
