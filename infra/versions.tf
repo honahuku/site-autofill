@@ -1,17 +1,9 @@
-terraform {
-  cloud {
-    organization = "honahuku1"
+variable "GOOGLE_CREDENTIALS" {}
+variable "PROJECT_ID" {}
 
-    workspaces {
-      name = "site-autofill"
-    }
-  }
-
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 4.41.0"
-    }
-  }
-    required_version = ">= 1.3.3"
+provider "google" {
+  credentials = "${var.GOOGLE_CREDENTIALS}"
+  project     = "${var.PROJECT_ID}"
+  region = "asia-northeast1"
+  zone   = "asia-northeast1-a"
 }
