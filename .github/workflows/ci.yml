@@ -45,6 +45,6 @@ jobs:
 
     # Docker イメージを Container Registry に Push
     - name: 'Push the docker image to Container Registry'
-      run: docker push $IMAGE
+      run: docker push ${{ github.sha }}
 # on:
 #   TODO:ここにmargeされたときの処理を書く
