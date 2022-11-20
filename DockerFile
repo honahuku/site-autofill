@@ -3,6 +3,16 @@ FROM ubuntu:22.04
 # bashを使うためのおまじない
 SHELL ["/bin/bash", "-c"]
 
+# secret keyを読み込むためのやつ
+ARG ACCOUNT_PW
+ENV ACCOUNT_PW $ACCOUNT_PW
+ARG EMAIL
+ENV EMAIL $EMAIL
+ARG MFA_KEY
+ENV MFA_KEY $MFA_KEY
+ARG URL
+ENV URL $URL
+
 # wgetとapt-key addをするための準備
 RUN apt update && \
     apt install -y \
@@ -31,5 +41,3 @@ RUN apt install -y \
 # 開発環境
 RUN apt install -y \
     vim
-
-
