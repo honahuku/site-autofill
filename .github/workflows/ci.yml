@@ -89,6 +89,4 @@ jobs:
         # EMAIL: ${{ secrets.EMAIL }}
         # MFA_KEY: ${{ secrets.MFA_KEY }}
         # URL: ${{ secrets.URL }}
-      run: gcloud container images add-tag \
-      asia.gcr.io/site-autofill/staging:latest \
-      asia.gcr.io/site-autofill/production:latest
+      run: gcloud container images add-tag asia.gcr.io/site-autofill/staging:latest asia.gcr.io/site-autofill/production:latest
