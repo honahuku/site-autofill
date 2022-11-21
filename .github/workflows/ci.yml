@@ -36,15 +36,15 @@ jobs:
     - name: 'Build a docker image'
       env:
         GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-        IMAGE: gcr.io/${{ secrets.GCP_PROJECT_ID }}/test-image:${{ github.sha }}
+        IMAGE: asia.gcr.io/${{ secrets.GCP_PROJECT_ID }}/test-image:${{ github.sha }}
         ACCOUNT_PW: ${{ secrets.ACCOUNT_PASS }}
         EMAIL: ${{ secrets.EMAIL }}
         MFA_KEY: ${{ secrets.MFA_KEY }}
         URL: ${{ secrets.URL }}
-      run: docker build . -f ./DockerFile -t ${{ github.sha }} --build-arg ACCOUNT_PW=$ACCOUNT_PW --build-arg EMAIL=$EMAIL --build-arg MFA_KEY=$MFA_KEY --build-arg URL=$URL
+      run: docker build -f ./DockerFile -t asia.gcr.io/site-autofill/dev:latest . --build-arg ACCOUNT_PW=$ACCOUNT_PW --build-arg EMAIL=$EMAIL --build-arg MFA_KEY=$MFA_KEY --build-arg URL=$URL
 
     # Docker イメージを Container Registry に Push
     - name: 'Push the docker image to Container Registry'
-      run: docker push ${{ github.sha }}
+      run: docker push asia.gcr.io/site-autofill/dev:latest
 # on:
 #   TODO:ここにmargeされたときの処理を書く
