@@ -14,8 +14,8 @@ ARG URL
 ENV URL $URL
 
 # wgetとapt-key addをするための準備
-RUN apt update && \
-    apt install -y \
+RUN apt-get update && \
+    apt-get install -y \
     wget \
     gnupg2
 
@@ -23,8 +23,8 @@ RUN apt update && \
 RUN wget https://dl.google.com/linux/linux_signing_key.pub  && \
     apt-key add linux_signing_key.pub && \
     echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | tee /etc/apt/sources.list.d/google-chrome.list && \
-    apt update && \
-    apt install -y \
+    apt-get update && \
+    apt-get install -y \
     python3-pip \
     python3-selenium \
     google-chrome-stable \
@@ -34,10 +34,10 @@ RUN wget https://dl.google.com/linux/linux_signing_key.pub  && \
 # chrome driver自動更新用のモジュール
 RUN pip3 install webdriver-manager
 
-RUN apt install -y \
+RUN apt-get install -y \
     # 2段階認証コード生成
     oathtool
 
 # 開発環境
-RUN apt install -y \
+RUN apt-get install -y \
     vim
