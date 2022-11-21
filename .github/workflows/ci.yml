@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build & push:
     runs-on: ubuntu-latest
 
     permissions:
@@ -26,7 +26,9 @@ jobs:
         name: "Authenticate to Google Cloud"
         uses: "google-github-actions/auth@v1"
         with:
-          workload_identity_provider: "projects/848541161515/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+          workload_identity_provider: |
+            "projects/848541161515/locations/global/workloadIdentityPools
+            /github-pool/providers/github-provider"
           service_account: "github-ci@site-autofill.iam.gserviceaccount.com"
 
       # yamllint
@@ -45,7 +47,8 @@ jobs:
       - name: "Build a docker image"
         if: github.ref != 'refs/heads/main'
         run: >
-          docker build -f ./DockerFile -t asia.gcr.io/site-autofill/staging:latest .
+          docker build -f ./DockerFile -t
+          asia.gcr.io/site-autofill/staging:latest .
           --build-arg ACCOUNT_PW=$ACCOUNT_PW
           --build-arg EMAIL=$EMAIL
           --build-arg MFA_KEY=$MFA_KEY
@@ -60,5 +63,6 @@ jobs:
       - name: "Image copy from stg"
         if: github.ref == 'refs/heads/main'
         run: >
-          gcloud container images add-tag asia.gcr.io/site-autofill/staging:latest
+          gcloud container images add-tag
+          asia.gcr.io/site-autofill/staging:latest
           asia.gcr.io/site-autofill/production:latest
