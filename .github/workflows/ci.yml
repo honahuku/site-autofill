@@ -44,7 +44,12 @@ jobs:
       # Docker イメージを作成
       - name: "Build a docker image"
         if: github.ref != 'refs/heads/main'
-        run: docker build -f ./DockerFile -t asia.gcr.io/site-autofill/staging:latest . --build-arg ACCOUNT_PW=$ACCOUNT_PW --build-arg EMAIL=$EMAIL --build-arg MFA_KEY=$MFA_KEY --build-arg URL=$URL
+        run: >
+          docker build -f ./DockerFile -t asia.gcr.io/site-autofill/staging:latest .
+          --build-arg ACCOUNT_PW=$ACCOUNT_PW
+          --build-arg EMAIL=$EMAIL
+          --build-arg MFA_KEY=$MFA_KEY
+          --build-arg URL=$URL
 
       # Docker イメージを Container Registry に Push
       - name: "Push the docker image to Container Registry"
@@ -54,4 +59,6 @@ jobs:
       # Docker イメージをコピー
       - name: "Image copy from stg"
         if: github.ref == 'refs/heads/main'
-        run: gcloud container images add-tag asia.gcr.io/site-autofill/staging:latest asia.gcr.io/site-autofill/production:latest
+        run: >
+          gcloud container images add-tag asia.gcr.io/site-autofill/staging:latest
+          asia.gcr.io/site-autofill/production:latest
