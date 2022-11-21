@@ -35,7 +35,7 @@ jobs:
       #   uses: karancode/yamllint-github-action@v2.0.0
 
       - name: export credentials
-        run: ${{ secrets.GCP_SA }} > credentials.json
+        run: echo "${{ secrets.GCP_SA }}" > credentials.json
 
       # Docker に gcloud コマンドの Credential を使わせる
       - name: "Configure docker to use the gcloud cli"
