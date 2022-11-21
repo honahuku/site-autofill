@@ -34,9 +34,12 @@ jobs:
       # - name: Yamllint Github Action
       #   uses: karancode/yamllint-github-action@v2.0.0
 
+      - name: export credentials
+        run: ${{ secrets.GCP_SA }} > credentials.json
+
       # Docker に gcloud コマンドの Credential を使わせる
       - name: "Configure docker to use the gcloud cli"
-        run: gcloud auth activate-service-account "github-ci@site-autofill.iam.gserviceaccount.com --key-file=${{ secrets.GCP_SA }} && gcloud auth list
+        run: gcloud auth activate-service-account "github-ci@site-autofill.iam.gserviceaccount.com --key-file=credentials.json && gcloud auth list
 
       # # Docker イメージを作成
       # - name: "Build a docker image"
