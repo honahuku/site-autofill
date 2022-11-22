@@ -40,7 +40,7 @@ jobs:
       # Docker に gcloud コマンドの Credential を使わせる
       - name: "Configure docker to use the gcloud cli"
         run: >
-          echo "${{ secrets.GCP_SA }}" > credential.json &&
+          echo -n '${{ secrets.GCP_SA }}' > credential.json &&
           ls -la &&
           gcloud auth activate-service-account "github-ci@site-autofill.iam.gserviceaccount.com" --key-file=credential.json &&
           gcloud auth list
