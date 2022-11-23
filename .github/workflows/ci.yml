@@ -42,6 +42,9 @@ jobs:
       - name: "Configure docker to use the gcloud cli"
         run: gcloud auth configure-docker --quiet
 
+      - name: "auth list"
+        run: gcloud auth list
+
       # Docker イメージを作成
       - name: "Build a docker image"
         if: github.ref != 'refs/heads/main'
