@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: "write"
+      contents: "read"
       id-token: "write"
 
     steps:
@@ -34,37 +34,34 @@ jobs:
       # - name: Yamllint Github Action
       #   uses: karancode/yamllint-github-action@v2.0.0
 
-      # - name: export credentials
-      #   run: echo "${{ secrets.GCP_SA }}" > credential.json
+      # gcloudの設定
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v0"
 
       # Docker に gcloud コマンドの Credential を使わせる
       - name: "Configure docker to use the gcloud cli"
+        run: gcloud auth configure-docker --quiet
+
+      # Docker イメージを作成
+      - name: "Build a docker image"
+        if: github.ref != 'refs/heads/main'
         run: >
-          echo -n '${{ secrets.GCP_SA }}' > credential.json &&
-          ls -la &&
-          gcloud auth activate-service-account "github-ci@site-autofill.iam.gserviceaccount.com" --key-file=credential.json &&
-          gcloud auth list
+          docker build -f ./DockerFile -t
+          asia.gcr.io/site-autofill/staging:latest .
+          --build-arg ACCOUNT_PW=$ACCOUNT_PW
+          --build-arg EMAIL=$EMAIL
+          --build-arg MFA_KEY=$MFA_KEY
+          --build-arg URL=$URL
 
-      # # Docker イメージを作成
-      # - name: "Build a docker image"
-      #   if: github.ref != 'refs/heads/main'
-      #   run: >
-      #     docker build -f ./DockerFile -t
-      #     asia.gcr.io/site-autofill/staging:latest .
-      #     --build-arg ACCOUNT_PW=$ACCOUNT_PW
-      #     --build-arg EMAIL=$EMAIL
-      #     --build-arg MFA_KEY=$MFA_KEY
-      #     --build-arg URL=$URL
+      # Docker イメージを Container Registry に Push
+      - name: "Push the docker image to Container Registry"
+        if: github.ref != 'refs/heads/main'
+        run: docker push asia.gcr.io/site-autofill/staging:latest
 
-      # # Docker イメージを Container Registry に Push
-      # - name: "Push the docker image to Container Registry"
-      #   if: github.ref != 'refs/heads/main'
-      #   run: docker push asia.gcr.io/site-autofill/staging:latest
-
-      # # Docker イメージをコピー
-      # - name: "Image copy from stg"
-      #   if: github.ref == 'refs/heads/main'
-      #   run: >
-      #     gcloud container images add-tag
-      #     asia.gcr.io/site-autofill/staging:latest
-      #     asia.gcr.io/site-autofill/production:latest
+      # Docker イメージをコピー
+      - name: "Image copy from stg"
+        if: github.ref == 'refs/heads/main'
+        run: >
+          gcloud container images add-tag
+          asia.gcr.io/site-autofill/staging:latest
+          asia.gcr.io/site-autofill/production:latest
