@@ -1,3 +1,5 @@
 infra/account.json
 infra/.terraform
 .env
+.envrc
+credential.json
